@@ -35,13 +35,17 @@
 #define _VIRTIO_RING_H_
 
 #include <stdint.h>
+#include <stddef.h>
 
 // #include <rte_common.h>
-#define RTE_PTR_ADD(ptr, x) ((void*)((uintptr_t)(ptr) + (x)))
-#define RTE_ALIGN_FLOOR(val, align) (typeof(val))((val) & (~((typeof(val))((align)-1))))
-#define RTE_ALIGN_CEIL(val, align) RTE_ALIGN_FLOOR(((val) + ((typeof(val))(align)-1)), align)
-#define RTE_PTR_ALIGN_FLOOR(ptr, align) ((typeof(ptr))RTE_ALIGN_FLOOR((uintptr_t)ptr, align))
-#define RTE_PTR_ALIGN_CEIL(ptr, align) RTE_PTR_ALIGN_FLOOR((typeof(ptr))RTE_PTR_ADD(ptr, (align)-1), align)
+
+#define RTE_PTR_ADD(ptr, x) ((void *)((uintptr_t)(ptr) + (x)))
+
+#define RTE_ALIGN_FLOOR(val, align) ((uintptr_t)(val) & ~((uintptr_t)((align) - 1)))
+#define RTE_ALIGN_CEIL(val, align)  RTE_ALIGN_FLOOR(((uintptr_t)(val) + (align) - 1), align)
+
+#define RTE_PTR_ALIGN_FLOOR(ptr, align) ((void *)RTE_ALIGN_FLOOR((uintptr_t)(ptr), align))
+#define RTE_PTR_ALIGN_CEIL(ptr, align)  ((void *)RTE_ALIGN_CEIL((uintptr_t)(ptr), align))
 
 /*
  * VirtIO Header, located in BAR 0.
